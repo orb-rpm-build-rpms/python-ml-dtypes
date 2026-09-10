@@ -1,3 +1,9 @@
+# scikit-build-core compiles the extension in its own out-of-tree build
+# directory, so debug source extraction finds no files and the debugsource
+# subpackage is empty (a fatal "Empty %%files" error). Disable the debug
+# packages, as with the other scikit-build C++ extensions in this stack.
+%global debug_package %{nil}
+
 Name:           python-ml-dtypes
 Version:        0.6.0
 Release:        %autorelease
