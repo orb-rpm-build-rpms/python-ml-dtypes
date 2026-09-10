@@ -34,6 +34,13 @@ Provides:       bundled(eigen3)
 %prep
 %autosetup -p1 -n ml_dtypes-%{version}
 
+# Upstream derives the version dynamically via scikit-build-core's regex metadata
+# provider reading ml_dtypes/__init__.py. In this build environment that provider
+# yields 0.0.0, which pyproject-rpm-macros rejects. Pin the version statically to
+# the packaged release and drop the dynamic provider so the two agree.
+sed -i 's/^dynamic = \["version"\].*/version = "%{version}"/' pyproject.toml
+sed -i '/^\[\[tool.dynamic-metadata\]\]/,/^input = /d' pyproject.toml
+
 
 %generate_buildrequires
 %pyproject_buildrequires
